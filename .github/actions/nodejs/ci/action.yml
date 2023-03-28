@@ -1,0 +1,38 @@
+name: "Node.js CI"
+description: | 
+  "This action builds and test Node.js app"
+
+inputs:
+  node-version:
+    description: 'The version of Node.js to use for building and testing.'
+    required: false
+    default: '16'
+  node-cache:
+    description: 'Package manager to use. Valid inputs: npm, yarn, pnpm. Default is npm'
+    default: "npm"
+    required: false
+  custom-test-command:
+    description: 'The custom command to run for testing the application.'
+    required: false
+    default: 'npm test'
+
+
+runs:
+  using: 'composite'
+  steps:
+    - uses: actions/checkout@v3
+
+    - name: Build and test
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: ${{ inputs.node-cache }}
+        cache-dependency-path: '**/package-lock.json'
+
+    - name: Install dependencies
+      shell: bash
+      run: npm ci
+
+    - name: Run tests
+      shell: bash
+      run: ${{ inputs.custom-test-command }}
