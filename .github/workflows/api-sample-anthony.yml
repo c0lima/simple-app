@@ -8,32 +8,11 @@ jobs:
   checkout:
     runs-on: self-hosted
     steps:
-    - name: CHECKOUT_REPOSITORY
-      run: echo "SE HACE EL CHECKOUT DEL REPOSITORIO"
-  
-  variables:
-    runs-on: self-hosted
-    steps:
-    - name: CREATE_VARIABLES
-      run: echo "SE CREAN VARIABLES"
-
-  build:
-    needs: [checkout,variables]
-    runs-on: self-hosted
-    steps:
-    - name: CREAR_BUILD
-      run: echo "SE CREA LA BUILD"
-
-  test:
-    needs: [build]
-    runs-on: self-hosted
-    steps:
-    - name: EJECUTANDO_TEST
-      run: echo "SE EJECUTAN LOS TEST"
-
-  deploy:
-    needs: [test]
-    runs-on: self-hosted
-    steps:
-    - name: DEPLOY_ARTIFACTS
-      run: echo "SE DESPLIEGA EL ARTEFACTO"
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Get-APIs
+      run: |
+        #!/bin/bash
+        alias apim=apim.sh
+        apim api get -a /api/v1/sample-anthony -s prd8252
