@@ -1,6 +1,5 @@
 name: "Node.js CI"
-description: | 
-  "This action builds and test Node.js app"
+description: "This action builds and tests a Node.js app"
 
 inputs:
   node-version:
@@ -8,14 +7,21 @@ inputs:
     required: false
     default: '16'
   node-cache:
-    description: 'Package manager to use. Valid inputs: npm, yarn, pnpm. Default is npm'
+    description: 'Package manager to use. Valid inputs: npm, yarn, pnpm.'
     default: "npm"
     required: false
-  custom-test-command:
+  test-command:
     description: 'The custom command to run for testing the application.'
     required: false
     default: 'npm test'
-
+  build-command:
+    description: 'Command required to build the app'
+    required: false
+    default: 'npm run build'
+  run-tests:
+    description: 'Whether to run tests or not'
+    required: false
+    default: 'true'
 
 runs:
   using: 'composite'
@@ -33,6 +39,36 @@ runs:
       shell: bash
       run: npm ci
 
+    - name: Validate test command
+      shell: bash
+      id: validate-test-command
+      run: |
+        if npx shell-quote -n ${{ inputs.test-command }} > /dev/null; then
+          echo "::set-output name=test-valid::true"
+        else
+          echo "::set-output name=test-valid::false"
+          echo "Invalid test command: '${{ inputs.test-command }}'"
+          exit 1
+        fi
+
     - name: Run tests
       shell: bash
-      run: ${{ inputs.custom-test-command }}
+      if: ${{ inputs.run-tests == 'true' && steps.validate-test-command.outputs.test-valid == 'true' }}
+      run: ${{ inputs.test-command }}
+
+    - name: Validate build command
+      shell: bash
+      id: validate-build-command
+      run: |
+        if npx shell-quote -n ${{ inputs.build-command }} > /dev/null; then
+          echo "::set-output name=build-valid::true"
+        else
+          echo "::set-output name=build-valid::false"
+          echo "Invalid build command: '${{ inputs.build-command }}'"
+          exit 1
+        fi
+
+    - name: Build app
+      shell: bash
+      if: ${{ steps.validate-build-command.outputs.build-valid == 'true' }}
+      run: ${{ inputs.build-command }}
