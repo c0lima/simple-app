@@ -1,0 +1,23 @@
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Node.js CI
+        uses: ./.github/actions/nodejs/ci
+        with:
+          node-version: '16'
+          node-cache: 'npm'
+          test-command: 'npm run test'
+          build-command: 'npm run build'
+          run-tests: 'true'
