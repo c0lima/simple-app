@@ -14,15 +14,15 @@ jobs:
     - name: Checkout repository GitLab
       run: | 
         git clone https://${{ vars.USER_REPO_API_SAMPLE_ANTHONY }}:${{ secrets.PASSREPO_API_SAMPLE_ANTHONY }}@gitlab.com/${{ vars.USER_REPO_API_SAMPLE_ANTHONY }}/${{ vars.REPO_API_SAMPLE_ANTHONY }}.git
-        cd ${{ vars.REPO_API_SAMPLE_ANTHONY }}
+        chmod 777 ${{ vars.REPO_API_SAMPLE_ANTHONY }} && cd ${{ vars.REPO_API_SAMPLE_ANTHONY }}
         ls -l
     
     - name: create_artifact
-      run: mkdir -p api-sample-anthony
+      run: mkdir -p api-sample-anthony && ls -l
     - name: paso 2
-      run: cp -R api-definition api-sample-anthony
+      run: cp -R api-definition api-sample-anthony && ls -l
     - name: paso 3
-      run: cp -R pom.xml api-sample-anthony
+      run: cp -R pom.xml api-sample-anthony && ls -l
 
     - name: publish_artifact
       run: |
