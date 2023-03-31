@@ -8,15 +8,14 @@ jobs:
   checkout:
     runs-on: self-hosted
     steps:
-    - name: directorio
-      run: |
-        pwd
-        ls -l
+    - name: Clean workspace
+      run: rm -r -f api-sample-anthony/
 
     - name: Checkout repository GitLab
       run: | 
         git clone https://anthony.moreno.cisnero:${{ secrets.PASSREPO_API_SAMPLE_ANTHONY }}@gitlab.com/anthony.moreno.cisnero/api-sample-anthony.git
         cd api-sample-anthony
+        ls -l
     
   create_artifact:
     runs-on: self-hosted
