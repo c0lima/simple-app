@@ -1,0 +1,25 @@
+name: api-sample-anthony-deploy
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  checkout:
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+  
+  create_artifact:
+    runs-on: self-hosted
+    steps:
+    - name: algo
+      run: echo "hola algo"
+
+  publish_artifact:
+    runs-on: self-hosted
+    steps:
+    - name: algo2
+      run: echo "hola algo2"

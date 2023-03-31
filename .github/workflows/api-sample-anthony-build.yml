@@ -1,4 +1,4 @@
-name: api-sample-anthony
+name: api-sample-anthony-build
 
 on:
   workflow_dispatch:
