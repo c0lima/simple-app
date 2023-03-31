@@ -5,22 +5,15 @@ on:
 
 jobs:
 
-  clean_workspace:
-    runs-on: self-hosted
-    steps:
-      - uses: AutoModality/action-clean@v1
-      - uses: actions/checkout@v2
-      - run: echo Hello World
-
   checkout:
     runs-on: self-hosted
-    needs: [clean_workspace]
     steps:
     - uses: AutoModality/action-clean@v1
     - uses: actions/checkout@v2
     - run: echo Hello World
     - name: Checkout repository GitLab
       run: | 
+        rm -r api-sample-anthony
         git clone https://anthony.moreno.cisnero:${{ secrets.PASSREPO_API_SAMPLE_ANTHONY }}@gitlab.com/anthony.moreno.cisnero/api-sample-anthony.git
         cd api-sample-anthony
         ls -l
