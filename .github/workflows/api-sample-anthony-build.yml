@@ -8,10 +8,11 @@ jobs:
   checkout:
     runs-on: self-hosted
     steps:
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-  
+    - name: Checkout repository GitLab
+      run: | 
+        git clone https://anthony.moreno.cisnero:${{ secrets.PASSREPO_API_SAMPLE_ANTHONY }}@gitlab.com/anthony.moreno.cisnero/api-sample-anthony.git
+        cd api-sample-anthony
+    
   create_artifact:
     runs-on: self-hosted
     steps:
