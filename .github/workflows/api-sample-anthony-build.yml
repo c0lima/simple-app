@@ -5,7 +5,7 @@ on:
 
 jobs:
 
-  checkout_repository:
+  create_publish_artifact:
     runs-on: self-hosted
     steps:
     - name: Clean workspace
@@ -17,19 +17,12 @@ jobs:
         cd ${{ vars.REPO_API_SAMPLE_ANTHONY }}
         ls -l
     
-  create_artifact:
-    runs-on: self-hosted
-    needs: [checkout_repository]
-    steps:
-    - name: artifact packaging
+    - name: create_artifact
       run: |
         mkdir -p ${{ vars.REPO_API_SAMPLE_ANTHONY }}
         cp -R api-definition ${{ vars.REPO_API_SAMPLE_ANTHONY }}
         cp -R pom.xml ${{ vars.REPO_API_SAMPLE_ANTHONY }}
 
-  publish_artifact:
-    runs-on: self-hosted
-    needs: [create_artifact]
-    steps:
-    - name: algo2
-      run: echo "hola algo2"
+    - name: publish_artifact
+      run: |
+        echo "publish_artifact"
