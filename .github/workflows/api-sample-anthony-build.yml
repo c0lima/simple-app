@@ -9,12 +9,12 @@ jobs:
     runs-on: self-hosted
     steps:
     - name: Clean workspace
-      run: rm -r -f api-sample-anthony/
+      run: rm -rf ${{ vars.REPO_API_SAMPLE_ANTHONY }}/
 
     - name: Checkout repository GitLab
       run: | 
-        git clone https://anthony.moreno.cisnero:${{ secrets.PASSREPO_API_SAMPLE_ANTHONY }}@gitlab.com/anthony.moreno.cisnero/api-sample-anthony.git
-        cd api-sample-anthony
+        git clone https://${{ vars.USER_REPO_API_SAMPLE_ANTHONY }}:${{ secrets.PASSREPO_API_SAMPLE_ANTHONY }}@gitlab.com/${{ vars.USER_REPO_API_SAMPLE_ANTHONY }}/${{ vars.REPO_API_SAMPLE_ANTHONY }}.git
+        cd ${{ vars.REPO_API_SAMPLE_ANTHONY }}
         ls -l
     
   create_artifact:
