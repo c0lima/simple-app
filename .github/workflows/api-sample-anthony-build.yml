@@ -14,6 +14,7 @@ jobs:
 
   checkout:
     runs-on: self-hosted
+    needs: [clean_workspace]
     steps:
     - uses: AutoModality/action-clean@v1
     - uses: actions/checkout@v2
