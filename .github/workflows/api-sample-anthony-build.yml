@@ -25,4 +25,5 @@ jobs:
     - name: publish_artifact
       run: |
         cd ${{ vars.REPO_API_SAMPLE_ANTHONY }}
+        ls -l
         az artifacts universal publish --organization https://dev.azure.com/Labs-DevOps/ --project='Axway' --scope project --feed api-sample-anthony --name api-sample-anthony --version ${{github.run_number}}.0.0 --description 'Universal Packages for job ${{ vars.REPO_API_SAMPLE_ANTHONY }} with version ${{github.run_number}}' --path api-sample-anthony/
