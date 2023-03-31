@@ -14,7 +14,6 @@ jobs:
     - name: Checkout repository GitLab
       run: | 
         git clone https://${{ vars.USER_REPO_API_SAMPLE_ANTHONY }}:${{ secrets.PASSREPO_API_SAMPLE_ANTHONY }}@gitlab.com/${{ vars.USER_REPO_API_SAMPLE_ANTHONY }}/${{ vars.REPO_API_SAMPLE_ANTHONY }}.git
-        chmod 777 ${{ vars.REPO_API_SAMPLE_ANTHONY }}
     
     - name: create_artifact
       run: |
