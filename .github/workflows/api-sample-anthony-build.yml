@@ -19,9 +19,9 @@ jobs:
     
     - name: create_artifact
       run: |
-        mkdir -p ${{ vars.REPO_API_SAMPLE_ANTHONY }}
-        cp -R api-definition ${{ vars.REPO_API_SAMPLE_ANTHONY }}
-        cp -R pom.xml ${{ vars.REPO_API_SAMPLE_ANTHONY }}
+        mkdir -p api-sample-anthony
+        cp -R api-definition api-sample-anthony
+        cp -R pom.xml api-sample-anthony
 
     - name: publish_artifact
       run: |
