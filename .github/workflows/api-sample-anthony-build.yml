@@ -24,4 +24,4 @@ jobs:
 
     - name: publish_artifact
       run: |
-        echo "publish_artifact"
+        ls -l
