@@ -8,9 +8,6 @@ jobs:
   checkout:
     runs-on: self-hosted
     steps:
-    - uses: AutoModality/action-clean@v1
-    - uses: actions/checkout@v2
-    - run: echo Hello World
     - name: Checkout repository GitLab
       run: | 
         rm -r api-sample-anthony
