@@ -16,12 +16,14 @@ jobs:
     
   create_artifact:
     runs-on: self-hosted
+    needs: [Checkout]
     steps:
     - name: algo
       run: echo "hola algo"
 
   publish_artifact:
     runs-on: self-hosted
+    needs: [create_artifact]
     steps:
     - name: algo2
       run: echo "hola algo2"
