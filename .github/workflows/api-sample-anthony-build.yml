@@ -18,10 +18,11 @@ jobs:
         ls -l
     
     - name: create_artifact
-      run: |
-        mkdir -p api-sample-anthony
-        cp -R api-definition api-sample-anthony
-        cp -R pom.xml api-sample-anthony
+      run: mkdir -p api-sample-anthony
+    - name: paso 2
+      run: cp -R api-definition api-sample-anthony
+    - name: paso 3
+      run: cp -R pom.xml api-sample-anthony
 
     - name: publish_artifact
       run: |
