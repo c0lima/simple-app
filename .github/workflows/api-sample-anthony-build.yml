@@ -15,16 +15,11 @@ jobs:
   create_artifact:
     runs-on: self-hosted
     steps:
-    - name: Create artifact  
-    run: echo "---------------------------------------------------------------------------------"
-    run: echo "| SUCCESS | Creando artefacto...                                                |"
-    run: echo "---------------------------------------------------------------------------------"
-    run: mkdir -p api-sample-anthony
-    run: cp -R api-definition api-sample-anthony
-      cp -R pom.xml api-sample-anthony
-      az artifacts universal publish --organization https://dev.azure.com/Labs-DevOps/ --project='Axway' --scope project --feed api-sample-anthony --name api-sample-anthony --version ${BUILD_NUMBER}.0.0 --description 'Universal Packages for job ${JOB_NAME} with version ${BUILD_NUMBER}' --path api-sample-anthony/
+    - name: algo
+      run: echo "hola algo"
 
-    - name: Get-APIs
-      run: |
-        alias apim=apim.sh
-        apim api get -a /api/v1/sample-anthony -s prd8252
+  publish_artifact:
+    runs-on: self-hosted
+    steps:
+    - name: algo2
+      run: echo "hola algo2"
