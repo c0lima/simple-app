@@ -15,14 +15,14 @@ jobs:
       run: | 
         git clone https://${{ vars.USER_REPO_API_SAMPLE_ANTHONY }}:${{ secrets.PASSREPO_API_SAMPLE_ANTHONY }}@gitlab.com/${{ vars.USER_REPO_API_SAMPLE_ANTHONY }}/${{ vars.REPO_API_SAMPLE_ANTHONY }}.git
     
-    - name: create_artifact
+    - name: Create_artifact
       run: |
         cd ${{ vars.REPO_API_SAMPLE_ANTHONY }}
         mkdir -p ${{ vars.REPO_API_SAMPLE_ANTHONY }}
         cp -R api-definition ${{ vars.REPO_API_SAMPLE_ANTHONY }}
         cp -R pom.xml ${{ vars.REPO_API_SAMPLE_ANTHONY }}
 
-    - name: publish_artifact
+    - name: Publish_artifact
       run: |
         cd ${{ vars.REPO_API_SAMPLE_ANTHONY }}
         ls -l
