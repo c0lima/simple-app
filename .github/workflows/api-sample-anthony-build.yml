@@ -5,10 +5,19 @@ on:
 
 jobs:
 
+  clean_workspace:
+    runs-on: self-hosted
+    steps:
+      - uses: AutoModality/action-clean@v1
+      - uses: actions/checkout@v2
+      - run: echo Hello World
+
   checkout:
     runs-on: self-hosted
     steps:
-    - uses: rtCamp/action-cleanup@master
+    - uses: AutoModality/action-clean@v1
+    - uses: actions/checkout@v2
+    - run: echo Hello World
     - name: Checkout repository GitLab
       run: | 
         git clone https://anthony.moreno.cisnero:${{ secrets.PASSREPO_API_SAMPLE_ANTHONY }}@gitlab.com/anthony.moreno.cisnero/api-sample-anthony.git
