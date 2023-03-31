@@ -5,7 +5,7 @@ on:
 
 jobs:
 
-  checkout:
+  checkout_repository:
     runs-on: self-hosted
     steps:
     - name: Clean workspace
@@ -21,8 +21,11 @@ jobs:
     runs-on: self-hosted
     needs: [Checkout]
     steps:
-    - name: algo
-      run: echo "hola algo"
+    - name: artifact packaging
+      run: |
+        mkdir -p ${{ vars.REPO_API_SAMPLE_ANTHONY }}
+        cp -R api-definition ${{ vars.REPO_API_SAMPLE_ANTHONY }}
+        cp -R pom.xml ${{ vars.REPO_API_SAMPLE_ANTHONY }}
 
   publish_artifact:
     runs-on: self-hosted
