@@ -19,7 +19,7 @@ jobs:
     
   create_artifact:
     runs-on: self-hosted
-    needs: [Checkout]
+    needs: [checkout_repository]
     steps:
     - name: artifact packaging
       run: |
