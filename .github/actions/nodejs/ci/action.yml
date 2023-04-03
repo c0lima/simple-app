@@ -39,36 +39,43 @@ runs:
       shell: bash
       run: npm ci
 
-    - name: Validate test command
+    - name: Validate and run test commands
       shell: bash
-      id: validate-test-command
+      if: ${{ inputs.run-tests == 'true' }}
       run: |
-        if npx shell-quote -n ${{ inputs.test-command }} > /dev/null; then
-          echo "::set-output name=test-valid::true"
+        VALID_TEST_COMMANDS=""
+        IFS="&&"
+        for CMD in ${{ inputs.test-command }}; do
+          if [[ $CMD =~ ^(npm\ test|npm\ run)[[:space:]] ]]; then
+            VALID_TEST_COMMANDS+=" && $CMD"
+          else
+            echo "Invalid test command: '$CMD'"
+            exit 1
+          fi
+        done
+        if [[ -n "$VALID_TEST_COMMANDS" ]]; then
+          eval "$VALID_TEST_COMMANDS"
         else
-          echo "::set-output name=test-valid::false"
-          echo "Invalid test command: '${{ inputs.test-command }}'"
-          exit 1
+        echo "No valid test commands provided."
+        exit 1
         fi
 
-    - name: Run tests
+    - name: Validate and run build commands
       shell: bash
-      if: ${{ inputs.run-tests == 'true' && steps.validate-test-command.outputs.test-valid == 'true' }}
-      run: ${{ inputs.test-command }}
-
-    - name: Validate build command
-      shell: bash
-      id: validate-build-command
       run: |
-        if npx shell-quote -n ${{ inputs.build-command }} > /dev/null; then
-          echo "::set-output name=build-valid::true"
+        VALID_BUILD_COMMANDS=""
+        IFS="&&"
+        for CMD in ${{ inputs.build-command }}; do
+          if [[ $CMD =~ ^(npm\ run)[[:space:]] ]]; then
+            VALID_BUILD_COMMANDS+=" && $CMD"
+          else
+            echo "Invalid build command: '$CMD'"
+            exit 1
+          fi
+        done
+        if [[ -n "$VALID_BUILD_COMMANDS" ]]; then
+          eval "$VALID_BUILD_COMMANDS"
         else
-          echo "::set-output name=build-valid::false"
-          echo "Invalid build command: '${{ inputs.build-command }}'"
+          echo "No valid build commands provided."
           exit 1
         fi
-
-    - name: Build app
-      shell: bash
-      if: ${{ steps.validate-build-command.outputs.build-valid == 'true' }}
-      run: ${{ inputs.build-command }}
