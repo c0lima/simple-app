@@ -46,9 +46,15 @@ runs:
         VALID_TEST_COMMANDS=""
         IFS="&&"
         read -ra COMMANDS <<< "${{ inputs.test-command }}"
+        FIRST_COMMAND=true
         for CMD in "${COMMANDS[@]}"; do
           if [[ $CMD =~ ^(npm\ test|npm\ run)[[:space:]] ]]; then
-            VALID_TEST_COMMANDS+=" && $CMD"
+            if [ "$FIRST_COMMAND" = true ]; then
+              VALID_TEST_COMMANDS+="$CMD"
+              FIRST_COMMAND=false
+            else
+              VALID_TEST_COMMANDS+=" && $CMD"
+            fi
           else
             echo "Invalid test command: '$CMD'"
             exit 1
@@ -67,9 +73,15 @@ runs:
         VALID_BUILD_COMMANDS=""
         IFS="&&"
         read -ra COMMANDS <<< "${{ inputs.build-command }}"
+        FIRST_COMMAND=true
         for CMD in "${COMMANDS[@]}"; do
           if [[ $CMD =~ ^(npm\ run)[[:space:]] ]]; then
-            VALID_BUILD_COMMANDS+=" && $CMD"
+            if [ "$FIRST_COMMAND" = true ]; then
+              VALID_BUILD_COMMANDS+="$CMD"
+              FIRST_COMMAND=false
+            else
+              VALID_BUILD_COMMANDS+=" && $CMD"
+            fi
           else
             echo "Invalid build command: '$CMD'"
             exit 1
