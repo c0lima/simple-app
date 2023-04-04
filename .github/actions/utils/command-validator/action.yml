@@ -44,6 +44,7 @@ runs:
         all_commands_valid=true
 
         for cmd in "${user_commands[@]}"; do
+          echo $cmd
           cmd=$(echo "$cmd" | xargs) # Remove leading and trailing whitespaces
           if is_valid_command "$cmd"; then
             echo "Valid command: $cmd"
