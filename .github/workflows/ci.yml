@@ -35,5 +35,6 @@ jobs:
         if: ${{ success() }}
         uses: docker/build-push-action@v4
         with:
+          context: /home/runner/work/simple-app/simple-app/
           push: true
           tags: c0lima/node-app:latest
