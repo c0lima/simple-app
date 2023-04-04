@@ -39,7 +39,7 @@ runs:
           return 1
         }
 
-        IFS="," read -ra user_commands <<< "$user_command"
+        IFS="&&" read -ra user_commands <<< "$user_command"
 
         all_commands_valid=true
 
