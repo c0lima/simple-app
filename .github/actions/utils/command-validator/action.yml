@@ -11,7 +11,7 @@ inputs:
   user-command:
     description: "User command to validate"
     required: true
-
+    
 runs:
   using: "composite"
   steps:
@@ -41,12 +41,17 @@ runs:
 
         IFS="&&" read -ra user_commands <<< "$user_command"
 
+        all_commands_valid=true
+
         for cmd in "${user_commands[@]}"; do
           cmd=$(echo "$cmd" | xargs) # Remove leading and trailing whitespaces
           if is_valid_command "$cmd"; then
             echo "Valid command: $cmd"
           else
             echo "Invalid command: $cmd" >&2
-            exit 1
+            all_commands_valid=false
+            break
           fi
         done
+
+        echo "::set-output name=valid::$all_commands_valid"
