@@ -50,7 +50,7 @@ runs:
       
     - name: Run test commands
       shell: bash
-      if: ${{ steps.validate-test-command.outputs.valid == 'true' }}
+      if: ${{ env.VALID == 'true' }}
       run: ${{ inputs.test-command }}
 
     - name: Validate build commands
@@ -63,5 +63,5 @@ runs:
 
     - name: Run build commands
       shell: bash 
-      if: ${{ steps.validate-build-command.outputs.valid == 'true' }}
+      if: ${{ env.VALID == 'true' }}
       run: ${{ inputs.build-command }}
