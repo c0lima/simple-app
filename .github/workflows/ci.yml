@@ -1,11 +1,9 @@
 name: Node.js CI
 on:
   push:
-    branches:
-      - main
+    branches: [main, development]
   pull_request:
-    branches:
-      - main
+    branches: [main, development]
 
 jobs:
   build_and_test:
@@ -22,13 +20,14 @@ jobs:
           run-tests: 'true'
 
       - name: Docker Login
-        if: ${{ success() }}
+        if: ${{ success() }} && github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: docker/login-action@v2.1.0
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push docker image
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: docker/build-push-action@v4
         with:
           context: /home/runner/work/simple-app/simple-app/
