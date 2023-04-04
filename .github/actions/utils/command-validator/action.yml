@@ -23,7 +23,7 @@ runs:
         user_command="${{ inputs.user-command }}"
 
         IFS="," read -ra valid_commands <<< "$valid_params"
-
+        echo $valid_commands
         function is_valid_command() {
           local cmd="$1"
           for valid_command in "${valid_commands[@]}"; do
@@ -44,7 +44,6 @@ runs:
         all_commands_valid=true
 
         for cmd in "${user_commands[@]}"; do
-          echo $cmd
           cmd=$(echo "$cmd" | xargs) # Remove leading and trailing whitespaces
           if is_valid_command "$cmd"; then
             echo "Valid command: $cmd"
