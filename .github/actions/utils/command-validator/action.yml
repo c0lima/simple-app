@@ -54,4 +54,4 @@ runs:
           fi
         done
 
-        echo "::set-output name=valid::$all_commands_valid"
+        echo "VALID=$all_commands_valid" >> $GITHUB_ENV
