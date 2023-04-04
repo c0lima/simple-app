@@ -44,7 +44,7 @@ runs:
       uses: ./.github/actions/utils/command-validator
       with:
         main-package: 'npm'
-        valid-params: 'run test && run test:linter && run test:syntax'
+        valid-params: 'run test, run test:linter, run test:syntax'
         user-command: ${{ inputs.test-command }}
       id: validate-test-command
       

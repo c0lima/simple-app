@@ -22,7 +22,7 @@ runs:
         valid_params="${{ inputs.valid-params }}"
         user_command="${{ inputs.user-command }}"
 
-        IFS="&&" read -ra valid_commands <<< "$valid_params"
+        IFS="," read -ra valid_commands <<< "$valid_params"
 
         function is_valid_command() {
           local cmd="$1"
