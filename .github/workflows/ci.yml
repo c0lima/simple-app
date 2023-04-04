@@ -20,6 +20,9 @@ jobs:
           test-command: 'npm run test'
           build-command: 'npm run build'
           run-tests: 'true'
+
+      - name: run ls
+        run: ls
       
 
       - name: Docker Login
