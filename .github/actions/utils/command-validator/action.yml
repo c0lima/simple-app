@@ -54,4 +54,5 @@ runs:
           fi
         done
 
+
         echo "VALID=$all_commands_valid" >> $GITHUB_ENV
