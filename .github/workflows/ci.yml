@@ -17,6 +17,20 @@ jobs:
         with:
           node-version: '16'
           node-cache: 'npm'
-          test-command: 'npm run test && npm run test'
+          test-command: 'npm run test'
           build-command: 'npm run build'
           run-tests: 'true'
+      
+
+      - name: Docker Login
+        uses: docker/login-action@v2.1.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push docker image
+        if: ${{ success() }}
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          tags: c0lima/node-app:latest
