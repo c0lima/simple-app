@@ -40,30 +40,28 @@ runs:
       run: npm ci
 
     - name: Validate test commands
-      shell: bash
-      id: validate-test-command
       if: ${{ inputs.run-tests == 'true' }}
       uses: ./.github/actions/utils/command-validator
       with:
         main-package: 'npm'
         valid-params: 'run test && run test:linter && run test:syntax'
         user-command: ${{ inputs.test-command }}
+      id: validate-test-command
       
     - name: Run test commands
       shell: bash
       if: ${{ steps.validate-test-command.outputs.valid == 'true' }}
       run: ${{ inputs.test-command }}
 
-    - name: Validate and run build commands
-      shell: bash
-      id: validate-build-command
+    - name: Validate build commands
       uses: ./.github/actions/utils/command-validator
       with:
         main-package: 'npm'
         valid-params: 'run build'
         user-command: ${{ inputs.build-command }}
+      id: validate-build-command
 
     - name: Run build commands
       shell: bash 
-      if: steps.validate-build-command.outputs.valid == 'true'
+      if: ${{ steps.validate-build-command.outputs.valid == 'true' }}
       run: ${{ inputs.build-command }}
