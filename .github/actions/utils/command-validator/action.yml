@@ -1,0 +1,52 @@
+name: "Command Validator"
+description: "This action validates user commands based on the main package and valid parameters"
+
+inputs:
+  main-package:
+    description: "The main package for the commands (e.g., npm, maven)"
+    required: true
+  valid-params:
+    description: "Valid command parameters (separated by '&&')"
+    required: true
+  user-command:
+    description: "User command to validate"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Validate user command
+      shell: bash
+      run: |
+        main_package="${{ inputs.main-package }}"
+        valid_params="${{ inputs.valid-params }}"
+        user_command="${{ inputs.user-command }}"
+
+        IFS="&&" read -ra valid_commands <<< "$valid_params"
+
+        function is_valid_command() {
+          local cmd="$1"
+          for valid_command in "${valid_commands[@]}"; do
+            # Check if the command matches a valid command pattern
+            if [[ "$cmd" =~ ^$main_package[[:space:]]$valid_command ]]; then
+              return 0
+            fi
+            # Check if the command matches the custom command pattern
+            if [[ "$cmd" =~ ^$main_package[[:space:]]run[[:space:]]test:(.+) ]]; then
+              return 0
+            fi
+          done
+          return 1
+        }
+
+        IFS="&&" read -ra user_commands <<< "$user_command"
+
+        for cmd in "${user_commands[@]}"; do
+          cmd=$(echo "$cmd" | xargs) # Remove leading and trailing whitespaces
+          if is_valid_command "$cmd"; then
+            echo "Valid command: $cmd"
+          else
+            echo "Invalid command: $cmd" >&2
+            exit 1
+          fi
+        done

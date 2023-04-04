@@ -39,57 +39,31 @@ runs:
       shell: bash
       run: npm ci
 
-    - name: Validate and run test commands
+    - name: Validate test commands
       shell: bash
+      id: validate-test-command
       if: ${{ inputs.run-tests == 'true' }}
-      run: |
-        VALID_TEST_COMMANDS=""
-        IFS="&&"
-        read -ra COMMANDS <<< "${{ inputs.test-command }}"
-        FIRST_COMMAND=true
-        for CMD in "${COMMANDS[@]}"; do
-          if [[ $CMD =~ ^(npm\ test|npm\ run)[[:space:]] ]]; then
-            if [ "$FIRST_COMMAND" = true ]; then
-              VALID_TEST_COMMANDS+="$CMD"
-              FIRST_COMMAND=false
-            else
-              VALID_TEST_COMMANDS+=" && $CMD"
-            fi
-          else
-            echo "Invalid test command: '$CMD'"
-            exit 1
-          fi
-        done
-        if [[ -n "$VALID_TEST_COMMANDS" ]]; then
-          eval "$VALID_TEST_COMMANDS"
-        else
-          echo "No valid test commands provided."
-          exit 1
-        fi
+      uses: ./.github/actions/utils/command-validator
+      with:
+        main-package: 'npm'
+        valid-params: 'run test && run test:linter && run test:syntax'
+        user-command: ${{ inputs.test-command }}
+      
+    - name: Run test commands
+      shell: bash
+      if: ${{ steps.validate-test-command.outputs.valid == 'true' }}
+      run: ${{ inputs.test-command }}
 
     - name: Validate and run build commands
       shell: bash
-      run: |
-        VALID_BUILD_COMMANDS=""
-        IFS="&&"
-        read -ra COMMANDS <<< "${{ inputs.build-command }}"
-        FIRST_COMMAND=true
-        for CMD in "${COMMANDS[@]}"; do
-          if [[ $CMD =~ ^(npm\ run)[[:space:]] ]]; then
-            if [ "$FIRST_COMMAND" = true ]; then
-              VALID_BUILD_COMMANDS+="$CMD"
-              FIRST_COMMAND=false
-            else
-              VALID_BUILD_COMMANDS+=" && $CMD"
-            fi
-          else
-            echo "Invalid build command: '$CMD'"
-            exit 1
-          fi
-        done
-        if [[ -n "$VALID_BUILD_COMMANDS" ]]; then
-          eval "$VALID_BUILD_COMMANDS"
-        else
-          echo "No valid build commands provided."
-          exit 1
-        fi
+      id: validate-build-command
+      uses: ./.github/actions/utils/command-validator
+      with:
+        main-package: 'npm'
+        valid-params: 'run build'
+        user-command: ${{ inputs.build-command }}
+
+    - name: Run build commands
+      shell: bash 
+      if: steps.validate-build-command.outputs.valid == 'true'
+      run: ${{ inputs.build-command }}

@@ -17,6 +17,6 @@ jobs:
         with:
           node-version: '16'
           node-cache: 'npm'
-          test-command: 'npm run test && npm run test'
+          test-command: 'npm run test && npm run test:syntax'
           build-command: 'npm run build'
           run-tests: 'true'
