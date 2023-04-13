@@ -1,0 +1,9 @@
+2023/04/11 20:08:10 [emerg] 1#1: unknown "upstream_name" variable
+2023/04/11 21:18:38 [error] 33#33: *4 open() "/usr/share/nginx/html/asdadasd" failed (2: No such file or directory), client: 172.28.0.1, server: localhost, request: "GET /asdadasd HTTP/1.1", host: "localhost"
+2023/04/11 21:18:38 [error] 33#33: *4 open() "/usr/share/nginx/html/asdadasd" failed (2: No such file or directory), client: 172.28.0.1, server: localhost, request: "GET /asdadasd HTTP/1.1", host: "localhost"
+2023/04/11 21:18:38 [error] 33#33: *4 open() "/usr/share/nginx/html/asdadasd" failed (2: No such file or directory), client: 172.28.0.1, server: localhost, request: "GET /asdadasd HTTP/1.1", host: "localhost"
+2023/04/11 21:18:38 [error] 33#33: *4 open() "/usr/share/nginx/html/asdadasd" failed (2: No such file or directory), client: 172.28.0.1, server: localhost, request: "GET /asdadasd HTTP/1.1", host: "localhost"
+2023/04/11 21:18:38 [error] 33#33: *4 open() "/usr/share/nginx/html/asdadasd" failed (2: No such file or directory), client: 172.28.0.1, server: localhost, request: "GET /asdadasd HTTP/1.1", host: "localhost"
+2023/04/11 21:18:39 [error] 33#33: *4 open() "/usr/share/nginx/html/asdadasd" failed (2: No such file or directory), client: 172.28.0.1, server: localhost, request: "GET /asdadasd HTTP/1.1", host: "localhost"
+2023/04/11 21:18:39 [error] 33#33: *4 open() "/usr/share/nginx/html/asdadasd" failed (2: No such file or directory), client: 172.28.0.1, server: localhost, request: "GET /asdadasd HTTP/1.1", host: "localhost"
+2023/04/11 21:18:39 [error] 33#33: *4 open() "/usr/share/nginx/html/asdadasd" failed (2: No such file or directory), client: 172.28.0.1, server: localhost, request: "GET /asdadasd HTTP/1.1", host: "localhost"
