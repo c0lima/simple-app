@@ -1,0 +1,29 @@
+filebeat.autodiscover:
+  providers:
+    - type: docker
+      templates:
+        - condition:
+            contains:
+              docker.container.image: c0lima/node-app
+          config:
+            - type: log
+              paths:
+                - "/var/log/nginx/access.log"
+            - type: log
+              paths:
+                - "/var/log/nginx/error.log"
+
+processors:
+  - add_docker_metadata: ~
+
+filebeat.config.modules:
+  path: ${path.config}/modules.d/*.yml
+
+output.elasticsearch:
+  hosts: ['${ELASTICSEARCH_HOST:elasticsearch}:${ELASTICSEARCH_PORT:9200}']
+
+setup.kibana:
+  host: "http://${KIBANA_HOST:kibana}:${KIBANA_PORT:5601}"
+
+logging.level: debug
+logging.selectors: ["*"]
