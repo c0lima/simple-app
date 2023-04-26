@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  namespace: myapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      annotations:
+        co.elastic.logs/module: "nginx"
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: web
+        image: c0lima/node-app:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: nginx-config
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+        - name: nginx-logs
+          mountPath: /var/log/nginx
+      - name: nginx-log-forwarder
+        image: busybox
+        command: ['sh', '-c', 'tail -n+1 -f /var/log/nginx/access.log >&1 & tail -n+1 -f /var/log/nginx/error.log >&2']
+        volumeMounts:
+        - name: nginx-logs
+          mountPath: /var/log/nginx
+      volumes:
+      - name: nginx-config
+        configMap:
+          name: nginx-config
+      - name: nginx-logs
+        emptyDir: {}
