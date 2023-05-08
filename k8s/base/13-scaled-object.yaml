@@ -2,6 +2,7 @@ apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
   name: nginx-scale
+  namespace: myapp
 spec:
   scaleTargetRef:
     kind: Deployment
@@ -9,38 +10,13 @@ spec:
   minReplicaCount: 1
   maxReplicaCount: 20
   cooldownPeriod: 30
-  pollingInterval: 1
+  pollingInterval: 30
   triggers:
   - type: elasticsearch
     metadata:
-      addresses: http://elasticsearch.myapp:9200
+      addresses: http://elasticsearch:9200
       index: filebeat-*
-      searchBody: >
-        {
-          "query": {
-            "bool": {
-              "filter": {
-                "range": {
-                  "@timestamp": {
-                    "gte": "now-1m"
-                  }
-                }
-              },
-              "must": {
-                "match": {
-                  "app_kubernetes_io_name": "nginx-ingress"
-                }
-              }
-            }
-          },
-          "aggs": {
-            "nginx_connections_active_keda": {
-              "avg": {
-                "field": "nginx_ingress_nginx_connections_active"
-              }
-            }
-          },
-          "size": 0
-        }
-      valueLocation: aggregations.nginx_connections_active_keda.value
-      threshold: "100"
+      searchTemplateName: nginx_requests_keda
+      valueLocation: aggregations.requests_per_minute.buckets.0.total_requests_or_zero.value
+      threshold: "30"
+      targetValue: "60"

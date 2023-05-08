@@ -21,10 +21,10 @@ spec:
         image: docker.elastic.co/elasticsearch/elasticsearch:8.7.0
         readinessProbe:
           httpGet:
-            path: /_cluster/health?wait_for_status=yellow&timeout=1s
+            path: /_cluster/health?wait_for_status=yellow
             port: 9200
           initialDelaySeconds: 5
-          periodSeconds: 10
+          periodSeconds: 5
         env:
         - name: node.name
           value: elasticsearch
@@ -41,10 +41,13 @@ spec:
       initContainers:
       - name: init-es-data-dir
         image: busybox
-        command: ["sh", "-c", "mkdir -p /usr/share/elasticsearch/data && chown 1000:1000 /usr/share/elasticsearch/data"]
+        command: ["sh", "-c", "mkdir -p /mnt/data/elasticsearch && chown 1000:1000 /mnt/data/elasticsearch"]
+        securityContext:
+          runAsUser: 0
         volumeMounts:
         - name: esdata
-          mountPath: /usr/share/elasticsearch/data
+          mountPath: /mnt/data/elasticsearch
+          subPath: elasticsearch
       volumes:
       - name: esdata
         persistentVolumeClaim:
