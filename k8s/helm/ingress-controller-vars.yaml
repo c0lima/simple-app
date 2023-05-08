@@ -1,0 +1,13 @@
+controller:
+  watchIngressWithoutClass: true
+  service:
+    type: NodePort
+    httpPort:
+      nodePort: 30005
+  pod:
+    annotations:
+      co.elastic.logs/module: nginx
+      co.elastic.logs/fileset.stdout: access
+      co.elastic.logs/fileset.stderr: error
+      co.elastic.logs/var.paths.stdout: "/var/log/containers/*${data.kubernetes.container.id}.log"
+      co.elastic.logs/var.paths.stderr: "/var/log/containers/*${data.kubernetes.container.id}.log"

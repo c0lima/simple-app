@@ -121,14 +121,6 @@ data:
             type: container
             paths:
               - /var/log/containers/*${data.kubernetes.container.id}.log
-    filebeat.modules:
-    - module: nginx
-      access:
-        enabled: true
-        var.paths: ["/var/log/nginx/access.log*"]
-      error:
-        enabled: true
-        var.paths: ["/var/log/nginx/error.log*"]
     setup.kibana:
       host: "kibana:5601"
     output.elasticsearch:
@@ -154,13 +146,6 @@ spec:
     spec:
       serviceAccountName: filebeat
       terminationGracePeriodSeconds: 30
-      initContainers:
-      - name: init-wait-for-elasticsearch
-        image: busybox
-        command: ['sh', '-c', 'until nc -zv elasticsearch 9200; do echo waiting for elasticsearch; sleep 5; done']
-      - name: init-wait-for-kibana
-        image: busybox
-        command: ['sh', '-c', 'until nc -zv kibana 5601; do echo waiting for kibana; sleep 5; done']
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
       containers:
@@ -185,10 +170,10 @@ spec:
           #privileged: true
         resources:
           limits:
-            memory: 200Mi
+            memory: 700Mi
           requests:
-            cpu: 100m
-            memory: 100Mi
+            cpu: 700m
+            memory: 700Mi
         volumeMounts:
         - name: config
           mountPath: /etc/filebeat.yml

@@ -1,0 +1,59 @@
+{
+  "script": {
+    "lang": "mustache",
+    "source": {
+      "query": {
+        "bool": {
+          "filter": [
+            {
+              "range": {
+                "@timestamp": {
+                  "gte": "now-1m"
+                }
+              }
+            },
+            {
+              "match": {
+                "kubernetes.namespace": "myapp"
+              }
+            },
+            {
+              "match": {
+                "kubernetes.container.name": "nginx-ingress"
+              }
+            },
+            {
+              "match": {
+                "http.request.method": "GET"
+              }
+            }
+          ]
+        }
+      },
+      "size": 0,
+      "aggs": {
+        "requests_per_minute": {
+          "date_histogram": {
+            "field": "@timestamp",
+            "fixed_interval": "1m"
+          },
+          "aggs": {
+            "total_requests": {
+              "value_count": {
+                "field": "http.request.method"
+              }
+            },
+            "total_requests_or_zero": {
+              "bucket_script": {
+                "buckets_path": {
+                  "count": "total_requests"
+                },
+                "script": "params.count != null ? params.count : 0"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
